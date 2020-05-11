@@ -30,24 +30,40 @@ int main()
   for(unsigned i = 0; i < size; i++)
     std::cin >> arr[i];
   bubbleSortArr(arr, size);
-  for(unsigned i = 0, freq = 0; i < size-1; i++)
+  for(unsigned i = 0, freq = 0; i < size; i++)
   {
-    if(arr[i] == arr[i+1] or arr[i] == arr[i-1])
+    if(i == size - 1)
     {
-      nonuvsVec.push_back(arr + i);
+      if(arr[i] == *nonuvsVec.back())
+      {
+        nonuvsVec.push_back(arr+i);
+        freq++;
+        nonuvsFVec.push_back(freq);
+      }
+    }
+    else if(arr[i] == arr[i+1])
+    {
+      nonuvsVec.push_back(arr+i);
       freq++;
     }
-    if(freq != 0)
+    else
     {
-      nonuvsFVec.push_back(freq);
+      if(nonuvsVec.size() != 0 and arr[i] == *nonuvsVec.back())
+      {
+        nonuvsVec.push_back(arr+i);
+        freq++;
+        nonuvsFVec.push_back(freq);
+      }
       freq = 0;
     }
   }
   std::cout << "non unique values of array: ";
-  for(auto el : nonuvsVec)
-    std::cout << *el << " ";
-  std::cout << "their respective frequency: ";
-  for(auto el : nonuvsFVec)
-    std::cout << el << " ";
+  //for(auto el : nonuvsVec)
+  for(int i = 0; i < nonuvsVec.size(); i++)
+    std::cout << *nonuvsVec[i] << " ";
+  std::cout << "\ntheir respective frequency: ";
+  //for(auto el : nonuvsFVec)
+  for(int i = 0; i < nonuvsFVec.size(); i++)
+    std::cout << nonuvsFVec[i] << " ";
   return 0;
 }
