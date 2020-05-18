@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <cmath>
-int MinDivisor(int);
+int MinDivisor(int n, int iter = 2);
 int main()
 {
   int num;
@@ -12,8 +12,7 @@ int main()
   std::cout << MinDivisor(num);
   return 0;
 }
-int MinDivisor(int n) // Я не умею вычислять сложность функции. Не уверен, что кооличество операций пропорционально корню из n
+int MinDivisor(int n, int iter) // Я не умею вычислять сложность функции. Не уверен, что кооличество операций пропорционально корню из n
 {
-  static int d = 1;
-  return (d <= sqrt(n))?((n % ++d)?MinDivisor(n):d):n;
+  return (iter <= sqrt(n))?((n % iter)?MinDivisor(n, iter+1):iter):n;
 }
