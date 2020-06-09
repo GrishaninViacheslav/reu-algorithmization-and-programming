@@ -1,6 +1,6 @@
-// ������� �� ������� ��������� ����������
-// ������� �������� � ���������������� �������� �������:
-// 6. ����������� ������ � ������������� ������.
+// Сегодня на занятии обсуждаем реализацию
+// базовых операций с однонаправленным линейным списком:
+// 6. Уничтожение списка с освобождением памяти.
 
 #include <iostream>
 struct SinglyLinkedListNode
@@ -68,11 +68,13 @@ struct SinglyLinkedListStruct
 		head = nextHead;
 		return popedValue;
 	}
-	void destroy()
+	void destroy() // https://ru.stackoverflow.com/questions/1138757/%D0%A3%D1%82%D0%B5%D1%87%D0%BA%D0%B0-%D0%BF%D0%B0%D0%BC%D1%8F%D1%82%D0%B8-%D0%B2-%D0%BE%D0%B4%D0%BD%D0%BE%D1%81%D0%B2%D1%8F%D0%B7%D0%BD%D0%BE%D0%BC-%D0%BB%D0%B8%D0%BD%D0%B5%D0%B9%D0%BD%D0%BE%D0%BC-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B5/1138802#1138802
 	{
-		for (SinglyLinkedListNode* currNode = head, *nodeToDestroy = NULL; currNode; nodeToDestroy = currNode, currNode = currNode->next)
-			if (nodeToDestroy)
-				delete nodeToDestroy;
+		for (SinglyLinkedListNode *currNode = head, *nex; currNode; currNode = nex)
+		{
+			nex = currNode->next;
+			delete currNode;
+		}
 		head = NULL;
 		tail = NULL;
 	}
@@ -81,7 +83,7 @@ int main()
 {
 
 	SinglyLinkedListStruct slList{ NULL, NULL };
-	//for (unsigned long i = 0; i < 4000000000; i++)  // Не уверен, что правильно освобождается память
+	//for(unsigned long i = 0; i < 4000000000; i++) // Цикл для проверки на утечки памяти
 	//{
 	slList.push_back(5);
 	slList.push_back(6);
@@ -92,15 +94,13 @@ int main()
 	slList.push_back(8);
 	slList.push_front(1);
 
-  for (SinglyLinkedListNode* currNode = slList.head; currNode; currNode = currNode->next)
+	for (SinglyLinkedListNode* currNode = slList.head; currNode; currNode = currNode->next)
 		std::cout << currNode->data << " ";
-	std::cout << std::endl;
 
 	slList.destroy();
 	//}
 
-	for (SinglyLinkedListNode* currNode = slList.head; currNode; currNode = currNode->next)
-		std::cout << currNode->data << " ";
+	std::cout << "\nok.\n";
 
 	return 0;
 }
